@@ -441,6 +441,7 @@ def dashboard():
     }
 
 
+
 # ==================================================
 # LIVE WEATHER CACHE
 # ==================================================
@@ -450,7 +451,7 @@ WEATHER_CACHE = {
     "cached_at": 0.0,
 }
 
-WEATHER_CACHE_TTL = 600  # 10 minutes
+WEATHER_CACHE_TTL = 600
 
 
 # ==================================================
@@ -465,82 +466,119 @@ def get_live_weather():
     now = time.time()
     cached_data = WEATHER_CACHE["data"]
 
-    # Return recently fetched data without contacting the provider.
     if (
         cached_data is not None
         and now - WEATHER_CACHE["cached_at"] < WEATHER_CACHE_TTL
     ):
+        return {**cached_data, "cache_status": "cached"}
+
+    providers = [
+        (
+            "Open-Meteo",
+            "https://api.open-meteo.com/v1/forecast"
+            f"?latitude={latitude}&longitude={longitude}"
+            "&current=temperature_2m,relative_humidity_2m,"
+            "precipitation,rain,wind_speed_10m,weather_code"
+            "&timezone=Asia%2FKolkata",
+        ),
+        (
+            "MET Norway",
+            "https://api.met.no/weatherapi/locationforecast/2.0/compact"
+            f"?lat={latitude}&lon={longitude}",
+        ),
+    ]
+
+    errors = []
+
+    for provider, url in providers:
+        try:
+            request = urllib.request.Request(
+                url,
+                headers={
+                    "User-Agent": "Q-RESCUE/1.0 (flood monitoring prototype)"
+                },
+            )
+
+            with urllib.request.urlopen(request, timeout=12) as response:
+                data = json.loads(response.read().decode("utf-8"))
+
+            if provider == "Open-Meteo":
+                current = data["current"]
+
+                result = {
+                    "location": "Belagavi",
+                    "latitude": latitude,
+                    "longitude": longitude,
+                    "temperature_c": current.get("temperature_2m"),
+                    "humidity_percent": current.get("relative_humidity_2m"),
+                    "precipitation_mm": current.get("precipitation"),
+                    "rain_mm": current.get("rain"),
+                    "wind_speed_kmh": current.get("wind_speed_10m"),
+                    "weather_code": current.get("weather_code"),
+                    "timestamp": current.get("time"),
+                }
+
+            else:
+                current = data["properties"]["timeseries"][0]
+                details = current["data"]["instant"]["details"]
+                next_hour = current["data"].get("next_1_hours", {})
+                summary = next_hour.get("summary", {})
+                rain_details = next_hour.get("details", {})
+
+                result = {
+                    "location": "Belagavi",
+                    "latitude": latitude,
+                    "longitude": longitude,
+                    "temperature_c": details.get("air_temperature"),
+                    "humidity_percent": details.get("relative_humidity"),
+                    "precipitation_mm": rain_details.get("precipitation_amount"),
+                    "rain_mm": rain_details.get("precipitation_amount"),
+                    "wind_speed_kmh": (
+                        details["wind_speed"] * 3.6
+                        if details.get("wind_speed") is not None
+                        else None
+                    ),
+                    "weather_code": summary.get("symbol_code"),
+                    "timestamp": current.get("time"),
+                }
+
+            result.update({
+                "source": provider,
+                "data_type": "Current weather model data",
+                "cache_status": "fresh",
+            })
+
+            WEATHER_CACHE["data"] = result
+            WEATHER_CACHE["cached_at"] = time.time()
+
+            return result
+
+        except Exception as exc:
+            logger.warning(
+                "Weather provider %s failed: %s: %s",
+                provider,
+                type(exc).__name__,
+                exc,
+            )
+            errors.append(f"{provider}: {type(exc).__name__}")
+
+    if cached_data is not None:
         return {
             **cached_data,
-            "cache_status": "cached",
+            "cache_status": "stale",
+            "warning": "All live weather refresh attempts failed.",
         }
 
-    url = (
-        "https://api.open-meteo.com/v1/forecast"
-        f"?latitude={latitude}"
-        f"&longitude={longitude}"
-        "&current=temperature_2m,relative_humidity_2m,"
-        "precipitation,rain,wind_speed_10m,weather_code"
-        "&timezone=Asia%2FKolkata"
-    )
-
-    try:
-        request = urllib.request.Request(
-            url,
-            headers={"User-Agent": "Q-RESCUE/1.0"},
-        )
-
-        with urllib.request.urlopen(request, timeout=15) as response:
-            data = json.loads(response.read().decode("utf-8"))
-
-        current = data.get("current")
-
-        if not isinstance(current, dict):
-            raise ValueError("Weather provider returned no current data")
-
-        result = {
-            "location": "Belagavi",
-            "latitude": latitude,
-            "longitude": longitude,
-            "temperature_c": current.get("temperature_2m"),
-            "humidity_percent": current.get("relative_humidity_2m"),
-            "precipitation_mm": current.get("precipitation"),
-            "rain_mm": current.get("rain"),
-            "wind_speed_kmh": current.get("wind_speed_10m"),
-            "weather_code": current.get("weather_code"),
-            "timestamp": current.get("time"),
-            "source": "Open-Meteo",
-            "data_type": "Current weather model data",
-            "cache_status": "fresh",
-        }
-
-        # Store only successful weather responses.
-        WEATHER_CACHE["data"] = result
-        WEATHER_CACHE["cached_at"] = time.time()
-
-        logger.info("Live weather fetched successfully")
-
-        return result
-
-    except Exception as exc:
-        logger.exception("Live weather fetch failed")
-
-        # Reuse the previous successful response if available.
-        if cached_data is not None:
-            return {
-                **cached_data,
-                "cache_status": "stale",
-                "warning": (
-                    "Weather refresh failed. "
-                    "Showing previously cached weather."
-                ),
-            }
-
-        # Never present historical records as live weather.
-        return {
-            "status": "unavailable",
-            "message": "Live weather is temporarily unavailable.",
-            "error": str(exc),
-            "location": "Belagavi",
-            "source": "Open-Meteo",
-        }
+    return {
+        "status": "unavailable",
+        "message": "All weather providers are temporarily unavailable.",
+        "location": "Belagavi",
+        "temperature_c": None,
+        "humidity_percent": None,
+        "precipitation_mm": None,
+        "rain_mm": None,
+        "wind_speed_kmh": None,
+        "weather_code": None,
+        "source": None,
+        "errors": errors,
+    }

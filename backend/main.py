@@ -1,13 +1,27 @@
+
 import os
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-import pandas as pd
-from pathlib import Path
-import urllib.request
 import json
 import time
-from datetime import datetime, timezone
+import logging
+import urllib.request
+from pathlib import Path
 
+import pandas as pd
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+
+# ==================================================
+# LOGGING
+# ==================================================
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("q-rescue")
+
+
+# ==================================================
+# FLOOD RISK CALCULATION
+# ==================================================
 
 def calculate_flood_risk(rainfall: float) -> dict:
     """Calculate baseline flood risk from rainfall thresholds."""
@@ -28,7 +42,7 @@ def calculate_flood_risk(rainfall: float) -> dict:
     return {
         "risk": risk,
         "risk_score": risk_score,
-        "prediction_source": "baseline-model"
+        "prediction_source": "baseline-model",
     }
 
 
@@ -39,7 +53,7 @@ def calculate_flood_risk(rainfall: float) -> dict:
 app = FastAPI(
     title="Q-RESCUE API",
     description="Flood Risk Prediction and Emergency Resource Allocation",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 
@@ -52,6 +66,12 @@ frontend_origins = [
     for origin in os.getenv("FRONTEND_ORIGINS", "").split(",")
     if origin.strip()
 ]
+
+# Production frontend origins
+frontend_origins.extend([
+    "https://q-resque.vercel.app",
+    "https://q-resque-p3bg0l9bo-srujan2013s-projects.vercel.app",
+])
 
 # Local development origins
 frontend_origins.extend([
@@ -69,8 +89,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 # ==================================================
-# DATA
+# DATA LOADING
 # ==================================================
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -96,7 +117,7 @@ def health():
     return {
         "status": "ok",
         "service": "Q-RESCUE",
-        "message": "Q-RESCUE backend is running"
+        "message": "Q-RESCUE backend is running",
     }
 
 
@@ -106,15 +127,12 @@ def health():
 
 @app.get("/api/population")
 def get_population():
-
-    population = population_df.fillna("").to_dict(
-        orient="records"
-    )
+    population = population_df.fillna("").to_dict(orient="records")
 
     return {
         "count": len(population),
         "source": "Census 2011 Primary Census Abstract",
-        "data": population
+        "data": population,
     }
 
 
@@ -124,18 +142,16 @@ def get_population():
 
 @app.get("/api/zone-population")
 def get_zone_population():
-
     population_lookup = dict(
         zip(
             population_df["qrescue_taluk"].astype(str).str.strip(),
-            population_df["population_2011"]
+            population_df["population_2011"],
         )
     )
 
     combined = []
 
     for _, zone in flood_df.iterrows():
-
         taluk = str(zone["taluk"]).strip()
 
         combined.append({
@@ -144,45 +160,27 @@ def get_zone_population():
             "latitude": float(zone["latitude"]),
             "longitude": float(zone["longitude"]),
             "flood_risk": zone["flood_risk"],
-
             "population_2011": population_lookup.get(taluk),
-
-            "villages_affected": int(
-                zone["villages_affected"]
-            ),
-
-            "bridges_submerged": int(
-                zone["bridges_submerged"]
-            ),
-
-            "rescue_teams_needed": int(
-                zone["rescue_teams_needed"]
-            ),
-
-            "boats_needed": int(
-                zone["boats_needed"]
-            ),
-
-            "distance_from_hq_km": float(
-                zone["distance_from_hq_km"]
-            )
+            "villages_affected": int(zone["villages_affected"]),
+            "bridges_submerged": int(zone["bridges_submerged"]),
+            "rescue_teams_needed": int(zone["rescue_teams_needed"]),
+            "boats_needed": int(zone["boats_needed"]),
+            "distance_from_hq_km": float(zone["distance_from_hq_km"]),
         })
 
     return {
         "count": len(combined),
-        "population_source":
-            "Census 2011 Primary Census Abstract",
-        "data": combined
+        "population_source": "Census 2011 Primary Census Abstract",
+        "data": combined,
     }
 
 
 # ==================================================
-# RAINFALL DATA
+# HISTORICAL RAINFALL DATA
 # ==================================================
 
 @app.get("/api/rainfall")
 def get_rainfall():
-
     latest = rainfall_df.iloc[-1]
 
     return {
@@ -190,7 +188,8 @@ def get_rainfall():
         "rainfall_mm": float(latest["rainfall_mm"]),
         "temperature_c": float(latest["temperature_c"]),
         "humidity": float(latest["humidity_%"]),
-        "wind_speed": float(latest["wind_speed"])
+        "wind_speed": float(latest["wind_speed"]),
+        "data_type": "Historical dataset",
     }
 
 
@@ -200,14 +199,11 @@ def get_rainfall():
 
 @app.get("/api/zones")
 def get_zones():
-
-    zones = flood_df.fillna("").to_dict(
-        orient="records"
-    )
+    zones = flood_df.fillna("").to_dict(orient="records")
 
     return {
         "count": len(zones),
-        "zones": zones
+        "zones": zones,
     }
 
 
@@ -227,8 +223,10 @@ def predict_flood():
     return {
         **prediction,
         "rainfall_mm": rainfall,
-        "humidity": humidity
+        "humidity": humidity,
+        "data_type": "Prediction based on latest dataset record",
     }
+
 
 # ==================================================
 # EMERGENCY RESOURCE ALLOCATION
@@ -236,249 +234,143 @@ def predict_flood():
 
 @app.get("/api/resources")
 def get_resources():
-
     resources = []
 
-    # Create Census population lookup once.
     population_lookup = dict(
         zip(
-            population_df["qrescue_taluk"]
-            .astype(str)
-            .str.strip(),
-            population_df["population_2011"]
+            population_df["qrescue_taluk"].astype(str).str.strip(),
+            population_df["population_2011"],
         )
     )
 
+    risk_score_map = {
+        "Critical": 100,
+        "High": 75,
+        "Medium": 50,
+        "Low": 25,
+    }
+
     for _, zone in flood_df.iterrows():
-
-        # -----------------------------------------
-        # BASIC ZONE DATA
-        # -----------------------------------------
-
         taluk = str(zone["taluk"]).strip()
         risk = str(zone["flood_risk"]).strip()
 
-        # Use Census 2011 population.
-        # Fall back to flood-zone population if
-        # Census value is unavailable.
+        census_population = population_lookup.get(taluk)
 
-        population = int(
-            population_lookup.get(
-                taluk,
-                zone["population"]
-            )
-        )
+        # Use Census population where available.
+        # Otherwise use the population in the flood-zone dataset.
+        if pd.isna(census_population):
+            population = int(zone["population"])
+            population_source = "Flood-zone dataset"
+        else:
+            population = int(census_population)
+            population_source = "Census 2011 Primary Census Abstract"
 
-        villages = int(
-            zone["villages_affected"]
-        )
+        villages = int(zone["villages_affected"])
+        distance = float(zone["distance_from_hq_km"])
 
-        distance = float(
-            zone["distance_from_hq_km"]
-        )
+        risk_score = risk_score_map.get(risk, 25)
 
-        # -----------------------------------------
-        # PRIORITY SCORE
-        # -----------------------------------------
+        population_score = min(population / 700000 * 100, 100)
+        village_score = min(villages / 60 * 100, 100)
+        distance_score = min(distance / 100 * 100, 100)
 
-        risk_score_map = {
-            "Critical": 100,
-            "High": 75,
-            "Medium": 50,
-            "Low": 25
-        }
-
-        risk_score = risk_score_map.get(
-            risk,
-            25
-        )
-
-        population_score = min(
-            population / 700000 * 100,
-            100
-        )
-
-        village_score = min(
-            villages / 60 * 100,
-            100
-        )
-
-        distance_score = min(
-            distance / 100 * 100,
-            100
-        )
-
-        priority_score = (
+        priority_score = round(
             risk_score * 0.40
             + population_score * 0.30
             + village_score * 0.20
             + distance_score * 0.10
         )
 
-        priority_score = round(
-            priority_score
-        )
-
-        # -----------------------------------------
-        # AMBULANCE REQUIREMENT
-        # -----------------------------------------
-
         if risk == "Critical":
-
             ambulances = 4
-
         elif risk == "High":
-
             ambulances = 3
-
         elif risk == "Medium":
-
             ambulances = 2
-
         else:
-
             ambulances = 1
 
-        # -----------------------------------------
-        # AFFECTED PEOPLE
-        # -----------------------------------------
-
-        # Prototype assumption:
-        # 10% of population estimated to be affected.
-
-        affected_people = int(
-            population * 0.10
-        )
-
-        # -----------------------------------------
-        # EMERGENCY RESOURCE ESTIMATES
-        # -----------------------------------------
+        # Prototype assumption: 10% of the population is affected.
+        affected_people = int(population * 0.10)
 
         food_kits = affected_people
-
         water_kits = affected_people
-
-        medical_kits = max(
-            1,
-            int(
-                affected_people * 0.20
-            )
-        )
-
-        shelter_kits = max(
-            1,
-            int(
-                affected_people * 0.20
-            )
-        )
-
-        life_jackets = (
-            int(zone["boats_needed"]) * 2
-        )
-
-        # -----------------------------------------
-        # RESOURCE RECORD
-        # -----------------------------------------
+        medical_kits = max(1, int(affected_people * 0.20))
+        shelter_kits = max(1, int(affected_people * 0.20))
+        life_jackets = int(zone["boats_needed"]) * 2
 
         resources.append({
-
             "taluk": taluk,
-
             "river": zone["river"],
-
             "flood_risk": risk,
-
             "population": population,
-
-            "population_source":
-                "Census 2011 Primary Census Abstract",
-
-            "affected_people":
-                affected_people,
-
-            "affected_people_source":
-                "Prototype estimate: 10% of population",
-
-            "villages_affected":
-                villages,
-
-            "boats_needed":
-                int(zone["boats_needed"]),
-
-            "rescue_teams_needed":
-                int(zone["rescue_teams_needed"]),
-
-            "ambulances_needed":
-                ambulances,
-
-            "food_kits_needed":
-                food_kits,
-
-            "water_kits_needed":
-                water_kits,
-
-            "medical_kits_needed":
-                medical_kits,
-
-            "shelter_kits_needed":
-                shelter_kits,
-
-            "life_jackets_needed":
-                life_jackets,
-
-            "priority_score":
-                priority_score,
-
-            "distance_from_hq_km":
-                distance
+            "population_source": population_source,
+            "affected_people": affected_people,
+            "affected_people_source": (
+                "Prototype estimate: 10% of population"
+            ),
+            "villages_affected": villages,
+            "boats_needed": int(zone["boats_needed"]),
+            "rescue_teams_needed": int(zone["rescue_teams_needed"]),
+            "ambulances_needed": ambulances,
+            "food_kits_needed": food_kits,
+            "water_kits_needed": water_kits,
+            "medical_kits_needed": medical_kits,
+            "shelter_kits_needed": shelter_kits,
+            "life_jackets_needed": life_jackets,
+            "priority_score": priority_score,
+            "distance_from_hq_km": distance,
         })
+
+    resources.sort(
+        key=lambda item: item["priority_score"],
+        reverse=True,
+    )
 
     return {
         "count": len(resources),
-        "resources": resources
+        "resources": resources,
     }
 
 
 # ==================================================
-# GEOGRAPHY - DAMS
+# GEOGRAPHY: DAMS
 # ==================================================
 
 @app.get("/api/dams")
 def get_dams():
-
     dams = (
         geography_df[
             geography_df["dam"]
             .fillna("")
             .astype(str)
-            .str.strip() != ""
+            .str.strip()
+            != ""
         ]
         .fillna("")
-        .to_dict(
-            orient="records"
-        )
+        .to_dict(orient="records")
     )
 
     return {
         "count": len(dams),
-        "dams": dams
+        "dams": dams,
     }
 
 
 # ==================================================
-# GEOGRAPHY - REGIONS
+# GEOGRAPHY: REGIONS
 # ==================================================
 
 @app.get("/api/regions")
 def get_regions():
-
     regions = (
         geography_df["region"]
         .dropna()
         .loc[
             geography_df["region"]
             .astype(str)
-            .str.strip() != ""
+            .str.strip()
+            != ""
         ]
         .unique()
         .tolist()
@@ -486,28 +378,21 @@ def get_regions():
 
     return {
         "count": len(regions),
-        "regions": regions
+        "regions": regions,
     }
 
 
 # ==================================================
-# GEOGRAPHY - VILLAGES
+# GEOGRAPHY: VILLAGES
 # ==================================================
 
 @app.get("/api/villages")
 def get_villages():
-
-    villages = (
-        geography_df
-        .fillna("")
-        .to_dict(
-            orient="records"
-        )
-    )
+    villages = geography_df.fillna("").to_dict(orient="records")
 
     return {
         "count": len(villages),
-        "villages": villages
+        "villages": villages,
     }
 
 
@@ -517,25 +402,17 @@ def get_villages():
 
 @app.get("/api/geography")
 def get_geography():
-
-    data = (
-        geography_df
-        .fillna("")
-        .to_dict(
-            orient="records"
-        )
-    )
+    data = geography_df.fillna("").to_dict(orient="records")
 
     return {
         "count": len(data),
-        "data": data
+        "data": data,
     }
 
 
 # ==================================================
 # DASHBOARD SUMMARY
 # ==================================================
-
 
 @app.get("/api/dashboard")
 def dashboard():
@@ -544,7 +421,6 @@ def dashboard():
     rainfall = float(latest["rainfall_mm"])
     humidity = float(latest["humidity_%"])
 
-    # Reuse the shared baseline risk calculation
     prediction = calculate_flood_risk(rainfall)
 
     return {
@@ -553,16 +429,19 @@ def dashboard():
             "rainfall_mm": rainfall,
             "temperature_c": float(latest["temperature_c"]),
             "humidity": humidity,
-            "wind_speed": float(latest["wind_speed"])
+            "wind_speed": float(latest["wind_speed"]),
+            "data_type": "Historical dataset",
         },
         "flood_risk": {
             "risk": prediction["risk"],
-            "score": prediction["risk_score"]
+            "score": prediction["risk_score"],
         },
         "zones": len(flood_df),
-        "status": "Monitoring Active"
+        "status": "Monitoring Active",
     }
-    # ==================================================
+
+
+# ==================================================
 # LIVE WEATHER CACHE
 # ==================================================
 
@@ -572,25 +451,21 @@ WEATHER_CACHE = {
 }
 
 WEATHER_CACHE_TTL = 600  # 10 minutes
+
+
 # ==================================================
 # LIVE WEATHER
 # ==================================================
 
-
 @app.get("/api/live-weather")
 def get_live_weather():
-    print(
-    f"Live weather fetch failed: {type(e).__name__}: {e}",
-    flush=True
-)
-    # Belagavi city coordinates
     latitude = 15.8497
     longitude = 74.4977
 
     now = time.time()
     cached_data = WEATHER_CACHE["data"]
 
-    # Reuse recent successful weather data
+    # Return recently fetched data without contacting the provider.
     if (
         cached_data is not None
         and now - WEATHER_CACHE["cached_at"] < WEATHER_CACHE_TTL
@@ -604,21 +479,24 @@ def get_live_weather():
         "https://api.open-meteo.com/v1/forecast"
         f"?latitude={latitude}"
         f"&longitude={longitude}"
-        "&current=temperature_2m,relative_humidity_2m,precipitation,"
-        "rain,wind_speed_10m,weather_code"
+        "&current=temperature_2m,relative_humidity_2m,"
+        "precipitation,rain,wind_speed_10m,weather_code"
         "&timezone=Asia%2FKolkata"
     )
 
     try:
         request = urllib.request.Request(
             url,
-            headers={"User-Agent": "Q-RESCUE/1.0"}
+            headers={"User-Agent": "Q-RESCUE/1.0"},
         )
 
-        with urllib.request.urlopen(request, timeout=10) as response:
-            data = json.loads(response.read().decode())
+        with urllib.request.urlopen(request, timeout=15) as response:
+            data = json.loads(response.read().decode("utf-8"))
 
-        current = data["current"]
+        current = data.get("current")
+
+        if not isinstance(current, dict):
+            raise ValueError("Weather provider returned no current data")
 
         result = {
             "location": "Belagavi",
@@ -636,24 +514,33 @@ def get_live_weather():
             "cache_status": "fresh",
         }
 
+        # Store only successful weather responses.
         WEATHER_CACHE["data"] = result
         WEATHER_CACHE["cached_at"] = time.time()
 
+        logger.info("Live weather fetched successfully")
+
         return result
 
-    except Exception as e:
-        # Serve the last successful result if the provider fails
+    except Exception as exc:
+        logger.exception("Live weather fetch failed")
+
+        # Reuse the previous successful response if available.
         if cached_data is not None:
             return {
                 **cached_data,
                 "cache_status": "stale",
-                "warning": "Live weather refresh failed; showing cached data.",
+                "warning": (
+                    "Weather refresh failed. "
+                    "Showing previously cached weather."
+                ),
             }
 
+        # Never present historical records as live weather.
         return {
-            "status": "error",
+            "status": "unavailable",
             "message": "Live weather is temporarily unavailable.",
-            "error": str(e),
+            "error": str(exc),
             "location": "Belagavi",
             "source": "Open-Meteo",
         }

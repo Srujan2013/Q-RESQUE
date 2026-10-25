@@ -5,6 +5,8 @@ import pandas as pd
 from pathlib import Path
 import urllib.request
 import json
+import time
+from datetime import datetime, timezone
 
 
 def calculate_flood_risk(rainfall: float) -> dict:
@@ -560,6 +562,16 @@ def dashboard():
         "zones": len(flood_df),
         "status": "Monitoring Active"
     }
+    # ==================================================
+# LIVE WEATHER CACHE
+# ==================================================
+
+WEATHER_CACHE = {
+    "data": None,
+    "cached_at": 0.0,
+}
+
+WEATHER_CACHE_TTL = 600  # 10 minutes
 # ==================================================
 # LIVE WEATHER
 # ==================================================

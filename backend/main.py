@@ -576,12 +576,29 @@ WEATHER_CACHE_TTL = 600  # 10 minutes
 # LIVE WEATHER
 # ==================================================
 
+
 @app.get("/api/live-weather")
 def get_live_weather():
-
+    print(
+    f"Live weather fetch failed: {type(e).__name__}: {e}",
+    flush=True
+)
     # Belagavi city coordinates
     latitude = 15.8497
     longitude = 74.4977
+
+    now = time.time()
+    cached_data = WEATHER_CACHE["data"]
+
+    # Reuse recent successful weather data
+    if (
+        cached_data is not None
+        and now - WEATHER_CACHE["cached_at"] < WEATHER_CACHE_TTL
+    ):
+        return {
+            **cached_data,
+            "cache_status": "cached",
+        }
 
     url = (
         "https://api.open-meteo.com/v1/forecast"
@@ -593,35 +610,50 @@ def get_live_weather():
     )
 
     try:
-        with urllib.request.urlopen(url, timeout=10) as response:
+        request = urllib.request.Request(
+            url,
+            headers={"User-Agent": "Q-RESCUE/1.0"}
+        )
+
+        with urllib.request.urlopen(request, timeout=10) as response:
             data = json.loads(response.read().decode())
 
         current = data["current"]
 
-        return {
+        result = {
             "location": "Belagavi",
             "latitude": latitude,
             "longitude": longitude,
-
             "temperature_c": current.get("temperature_2m"),
             "humidity_percent": current.get("relative_humidity_2m"),
             "precipitation_mm": current.get("precipitation"),
             "rain_mm": current.get("rain"),
             "wind_speed_kmh": current.get("wind_speed_10m"),
             "weather_code": current.get("weather_code"),
-
             "timestamp": current.get("time"),
-
             "source": "Open-Meteo",
-            "data_type": "Current weather model data"
+            "data_type": "Current weather model data",
+            "cache_status": "fresh",
         }
 
+        WEATHER_CACHE["data"] = result
+        WEATHER_CACHE["cached_at"] = time.time()
+
+        return result
+
     except Exception as e:
+        # Serve the last successful result if the provider fails
+        if cached_data is not None:
+            return {
+                **cached_data,
+                "cache_status": "stale",
+                "warning": "Live weather refresh failed; showing cached data.",
+            }
 
         return {
             "status": "error",
-            "message": "Unable to fetch live weather data",
-            "error": str(e)
+            "message": "Live weather is temporarily unavailable.",
+            "error": str(e),
+            "location": "Belagavi",
+            "source": "Open-Meteo",
         }
-    
-    

@@ -1,0 +1,19 @@
+region,taluk,river,dam,nearby_area,village,flood_hazard,terrain
+Upper Krishna,Chikkodi,Krishna,,Chikkodi,Yadur,High,Plain
+Upper Krishna,Chikkodi,Krishna,,Chikkodi,Kallol,High,Plain
+Upper Krishna,Chikkodi,Krishna,,Dattwad,Dattwad,High,Plain
+Upper Krishna,Chikkodi,Krishna,,Mallikwad,Mallikwad,High,Plain
+Upper Krishna,Nippani,Krishna,,Nippani,Nippani,High,Plain
+Upper Krishna,Raibag,Krishna,,Raibag,Raibag,High,Plain
+Upper Krishna,Athani,Krishna,,Athani,Athani,High,Plain
+Ghataprabha,Gokak,Ghataprabha,Ghataprabha Project,Gokak,Gokak,Very High,Plain
+Ghataprabha,Gokak,Ghataprabha,Ghataprabha Project,Melavanki,Melavanki,Very High,Plain
+Ghataprabha,Gokak,Ghataprabha,Ghataprabha Project,Udagatti,Udagatti,Very High,Plain
+Ghataprabha,Gokak,Ghataprabha,Ghataprabha Project,Talakatnal,Talakatnal,Very High,Plain
+Ghataprabha,Gokak,Ghataprabha,Ghataprabha Project,Chigadolli,Chigadolli,Very High,Plain
+Ghataprabha,Gokak,Ghataprabha,Ghataprabha Project,Adibatti,Adibatti,Very High,Plain
+Ghataprabha,Hukkeri,Ghataprabha,,Hukkeri,Hukkeri,High,Plain
+Malaprabha,Khanapur,Malaprabha,Malaprabha Dam,Navilutirtha,,Medium,Hilly
+Malaprabha,Khanapur,Malaprabha,Malaprabha Dam,Khanapur,Khanapur,Medium,Hilly
+Malaprabha,Saundatti,Malaprabha,Malaprabha Dam,Saundatti,Saundatti,Medium,Undulating
+Markandeya,Belagavi,Markandeya,Rakaskoppa Dam,Rakaskoppa,Rakaskoppa,Medium,Hilly

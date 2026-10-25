@@ -1,0 +1,11 @@
+taluk,river,latitude,longitude,population,flood_risk,villages_affected,bridges_submerged,rescue_teams_needed,boats_needed,distance_from_hq_km
+Chikkodi,Krishna,16.43,74.59,45000,Critical,45,5,4,3,55
+Nippani,Krishna,16.4,74.38,38000,Critical,38,4,3,3,46
+Raibag,Krishna,16.49,74.77,22000,High,22,3,2,2,72
+Athani,Krishna,16.73,75.07,31000,High,28,2,2,2,95
+Kagwad,Krishna,16.58,74.71,18000,Medium,15,1,1,1,68
+Gokak,Ghataprabha,16.16,74.82,62000,Critical,52,6,5,4,80
+Hukkeri,Hiranyakeshi,16.23,74.52,28000,High,30,3,3,2,42
+Khanapur,Malaprabha,15.64,74.64,19000,Medium,12,2,1,1,38
+Bailhongal,Malaprabha,15.8,75.0,35000,Low,8,1,1,0,48
+Savadatti,Malaprabha,15.76,75.06,24000,Medium,18,2,2,1,60

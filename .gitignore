@@ -1,0 +1,49 @@
+# macOS
+.DS_Store
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Node.js
+node_modules/
+frontend/dist/
+
+# IDE files
+.idea/
+.vscode/
+
+# Backup files
+backend/*_backup*
+Data/*_backup*
+
+# Research experiments and model artifacts
+Data/algorithm_benchmark/
+Data/hybrid_ablation_experiment/
+Data/hybrid_qaoa_experiment/
+Data/hybrid_qaoa_multistart_experiment/
+Data/hybrid_qaoa_v2_experiment/
+Data/qaoa_experiment/
+Data/qaoa_v2_experiment/
+Data/qaoa_v3_experiment/
+Data/qaoa_v4_experiment/
+Data/qaoa_10_zone_experiment/
+Data/qaoa_10_zone_v2_experiment/
+Data/scalability_experiment/
+Data/stress_test_experiment/
+Data/vqc_rf_experiment/
+Data/vqc_v2_experiment/
+Data/vqc_v3_experiment/
+Data/*.pkl
+Data/benchmark_algorithms.py
+Data/compare_*.py
+Data/evaluate_*.py
+Data/train_qaoa*.py
+Data/train_vqc*.py

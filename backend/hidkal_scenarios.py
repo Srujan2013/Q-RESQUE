@@ -4,7 +4,7 @@ from typing import Optional
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
-from database import init_db, insert, rows
+from backend.database import init_db, insert, rows
 
 router = APIRouter(prefix="/api/hidkal", tags=["Hidkal scenarios"])
 

@@ -9,7 +9,7 @@ from itertools import combinations
 import json, pickle
 import uuid
 from datetime import datetime, timezone
-from database import insert, one, rows
+from backend.database import insert, one, rows
 import numpy as np
 import pandas as pd
 from fastapi import APIRouter, HTTPException

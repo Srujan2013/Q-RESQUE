@@ -8,12 +8,12 @@ from typing import Optional
 
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Query
-from hidkal_scenarios import router as hidkal_scenarios_router
-from model_api import router as model_api_router
+from backend.hidkal_scenarios import router as hidkal_scenarios_router
+from backend.model_api import router as model_api_router
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from database import init_db, rows, one, insert, execute
+from backend.database import init_db, rows, one, insert, execute
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("q-rescue")

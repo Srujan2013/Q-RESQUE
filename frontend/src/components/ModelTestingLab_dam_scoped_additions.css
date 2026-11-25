@@ -1,0 +1,24 @@
+/* Dam-scoped scenario controls */
+.scenario-field select {
+    width: 100%;
+    min-height: 42px;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+    color: #172b45;
+    font: inherit;
+}
+
+.scenario-region-field select[multiple] {
+    min-height: 112px;
+    padding: 6px 10px;
+}
+
+.scenario-field-help {
+    display: block;
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1.5;
+    font-weight: 400;
+}

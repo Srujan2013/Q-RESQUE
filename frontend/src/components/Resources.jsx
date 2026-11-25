@@ -5,6 +5,36 @@ function Resources() {
     const [resources, setResources] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [officers, setOfficers] = useState(() => {
+        try {
+            return JSON.parse(
+                localStorage.getItem("qrescue:officer-directory") || "{}"
+            );
+        } catch {
+            return {};
+        }
+    });
+
+    const [editingOfficers, setEditingOfficers] = useState(false);
+
+    const updateOfficer = (key, field, value) => {
+        setOfficers((previous) => ({
+            ...previous,
+            [key]: {
+                ...(previous[key] || {}),
+                [field]: value
+            }
+        }));
+    };
+
+    const saveOfficers = () => {
+        localStorage.setItem(
+            "qrescue:officer-directory",
+            JSON.stringify(officers)
+        );
+        setEditingOfficers(false);
+    };
+
 
     useEffect(() => {
         fetch(apiUrl("/api/resources"))
@@ -67,6 +97,23 @@ function Resources() {
                         Priority scores are experimental decision-support estimates,
                         not validated emergency deployment instructions.
                     </p>
+
+                    <div className="resource-note">
+                        <strong>Prototype data assumptions</strong>
+                        <p>
+                            Population figures use Census 2011 data. Estimated affected
+                            people are calculated as 10% of population. Food and water
+                            kit quantities use that estimate; medical and shelter kit
+                            quantities use approximately 20%. Boat, rescue-team and
+                            ambulance quantities are prototype estimates.
+                        </p>
+                        <p>
+                            These figures are not live field reports, verified resource
+                            inventories or confirmed deployment requirements. Validate
+                            current population exposure, available stock and field demand
+                            before operational use.
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -74,7 +121,7 @@ function Resources() {
             {/* TOP 3 PRIORITY ZONES */}
             <div className="priority-section">
 
-                <h3>🚨 Top Emergency Priority Zones</h3>
+                <h3>📊 Prototype Priority Ranking</h3>
 
                 <div className="priority-grid">
 
@@ -117,7 +164,7 @@ function Resources() {
                                         {zone.affected_people.toLocaleString()}
                                     </strong>
                                     <small>
-                                        Estimated Affected
+                                        Estimated Affected (10%)
                                     </small>
                                 </div>
 
@@ -175,18 +222,18 @@ function Resources() {
                             <th>Area</th>
                             <th>River</th>
                             <th>Risk</th>
-                            <th>Population</th>
+                            <th>Population (2011)</th>
                             <th>Estimated Affected</th>
                             <th>Villages</th>
                             <th>Boats</th>
                             <th>Rescue Teams</th>
                             <th>Ambulances</th>
-                            <th>Food Kits</th>
-                            <th>Water Kits</th>
-                            <th>Medical Kits</th>
-                            <th>Shelter Kits</th>
+                            <th>Food Kits (Estimate)</th>
+                            <th>Water Kits (Estimate)</th>
+                            <th>Medical Kits (Estimate)</th>
+                            <th>Shelter Kits (Estimate)</th>
                             <th>Life Jackets</th>
-                            <th>Priority Score</th>
+                            <th>Prototype Priority Score</th>
 
                         </tr>
 
@@ -277,6 +324,91 @@ function Resources() {
 
                 </table>
 
+            </div>
+
+
+            {/* DISTRICT AND TALUK OFFICER DIRECTORY */}
+            <div className="officer-directory">
+                <div className="officer-directory-header">
+                    <div>
+                        <h3>🏛️ District & Taluk Officers Directory</h3>
+                        <p>Emergency administration and responsible officer contacts.</p>
+                        <small>Verify all details with the district administration before emergency use.</small>
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={() => editingOfficers ? saveOfficers() : setEditingOfficers(true)}
+                    >
+                        {editingOfficers ? "Save Details" : "✏️ Edit Details"}
+                    </button>
+                </div>
+
+                <div className="officer-group">
+                    <h4>District Administration</h4>
+                    <div className="officer-card">
+                        <h5>Deputy Commissioner (DC), Belagavi</h5>
+                        <span className="officer-status">
+                            {officers.dc?.name ? "Details entered, not independently verified" : "Not verified"}
+                        </span>
+
+                        {editingOfficers ? (
+                            <div className="officer-fields">
+                                <input placeholder="DC officer name" value={officers.dc?.name || ""} onChange={e => updateOfficer("dc", "name", e.target.value)} />
+                                <input placeholder="Office contact number" value={officers.dc?.phone || ""} onChange={e => updateOfficer("dc", "phone", e.target.value)} />
+                                <input placeholder="Official email" value={officers.dc?.email || ""} onChange={e => updateOfficer("dc", "email", e.target.value)} />
+                            </div>
+                        ) : (
+                            <div className="officer-details">
+                                <p>Name: {officers.dc?.name || "Not verified"}</p>
+                                <p>Phone: {officers.dc?.phone || "Not available"}</p>
+                                <p>Email: {officers.dc?.email || "Not available"}</p>
+                                {officers.dc?.phone && <a href={`tel:${officers.dc.phone}`}>📞 Call DC Office</a>}
+                                {officers.dc?.email && <a href={`mailto:${officers.dc.email}`}>✉️ Email DC Office</a>}
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                <div className="officer-group">
+                    <h4>Taluk Revenue Officers / Tahsildars</h4>
+                    <div className="officer-grid">
+                        {resources.map(zone => {
+                            const key = `taluk-${zone.taluk}`;
+                            const officer = officers[key] || {};
+
+                            return (
+                                <div className="officer-card" key={zone.taluk}>
+                                    <h5>{zone.taluk}</h5>
+                                    <span className="officer-status">
+                                        {officer.name ? "Details entered, not independently verified" : "Not verified"}
+                                    </span>
+                                    <strong>Revenue Officer / Tahsildar</strong>
+
+                                    {editingOfficers ? (
+                                        <div className="officer-fields">
+                                            <input placeholder="Officer name" value={officer.name || ""} onChange={e => updateOfficer(key, "name", e.target.value)} />
+                                            <input placeholder="Contact number" value={officer.phone || ""} onChange={e => updateOfficer(key, "phone", e.target.value)} />
+                                            <input placeholder="Official email" value={officer.email || ""} onChange={e => updateOfficer(key, "email", e.target.value)} />
+                                        </div>
+                                    ) : (
+                                        <div className="officer-details">
+                                            <p>Name: {officer.name || "Not verified"}</p>
+                                            <p>Phone: {officer.phone || "Not available"}</p>
+                                            <p>Email: {officer.email || "Not available"}</p>
+                                            {officer.phone && <a href={`tel:${officer.phone}`}>📞 Call Officer</a>}
+                                            {officer.email && <a href={`mailto:${officer.email}`}>✉️ Email Officer</a>}
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+
+                <p className="officer-disclaimer">
+                    <strong>Verification notice:</strong> Contact details entered here are user-provided and have not been independently verified. Confirm officer appointments and contact numbers before operational use. Details are saved in this browser only.
+                </p>
             </div>
 
         </section>

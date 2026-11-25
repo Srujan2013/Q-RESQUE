@@ -1,0 +1,77 @@
+/* Keep your existing ScenarioImpactMap.css rules, then append these additions. */
+
+/* Scenario risk styling */
+.scenario-map-legend i {
+    flex: 0 0 auto;
+}
+
+.scenario-map-panel .leaflet-popup-content {
+    line-height: 1.55;
+    min-width: 170px;
+}
+
+.taluk-impact-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.taluk-impact-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 760px;
+    font-size: 12px;
+}
+
+.taluk-impact-table th,
+.taluk-impact-table td {
+    padding: 12px 10px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+.taluk-impact-table thead th {
+    color: #52677c;
+    background: #f3f7fb;
+    font-weight: 800;
+}
+
+.taluk-impact-table tbody tr:hover {
+    background: #f8fbfe;
+}
+
+.taluk-impact-table tfoot th {
+    background: #eef5fa;
+    color: #18324b;
+    font-weight: 800;
+}
+
+.taluk-risk-pill {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 4px 9px;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.taluk-risk-pill.critical,
+.taluk-risk-pill.high {
+    color: #991b1b;
+    background: #fee2e2;
+}
+
+.taluk-risk-pill.medium {
+    color: #92400e;
+    background: #fef3c7;
+}
+
+.taluk-risk-pill.low {
+    color: #166534;
+    background: #dcfce7;
+}
+
+@media (max-width: 700px) {
+    .taluk-impact-table {
+        min-width: 700px;
+    }
+}

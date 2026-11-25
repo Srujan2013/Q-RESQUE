@@ -1,0 +1,35 @@
+{
+  "label_source": "Rainfall/humidity prototype rules",
+  "warning": "Not validated against observed flood events.",
+  "features": [
+    "rainfall_mm",
+    "temperature_c",
+    "humidity_%",
+    "wind_speed"
+  ],
+  "classes": [
+    "Low",
+    "High",
+    "Critical"
+  ],
+  "train_subset_rows": 600,
+  "test_rows": 658,
+  "test_start": "2022-03-14",
+  "test_end": "2023-12-31",
+  "results": [
+    {
+      "model": "Random Forest",
+      "accuracy": 0.9969604863221885,
+      "macro_f1": 0.9926463147242369,
+      "train_seconds": 0.33582182800091687,
+      "test_prediction_seconds": 0.03412407699943287
+    },
+    {
+      "model": "VQC V2",
+      "accuracy": 0.939209726443769,
+      "macro_f1": 0.7009452470126627,
+      "train_seconds": 342.81025617299747,
+      "test_prediction_seconds": 3.9872911789971113
+    }
+  ]
+}

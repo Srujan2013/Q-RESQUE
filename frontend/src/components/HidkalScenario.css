@@ -1,0 +1,331 @@
+.hidkal-page {
+    width: min(1120px, calc(100% - 32px));
+    margin: 28px auto 56px;
+    color: #172033;
+}
+
+.hidkal-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 22px;
+}
+
+.hidkal-eyebrow {
+    margin: 0 0 8px;
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .12em;
+}
+
+.hidkal-heading h1 {
+    margin: 0;
+    font-size: clamp(26px, 4vw, 38px);
+}
+
+.hidkal-heading p {
+    color: #64748b;
+    margin: 9px 0 0;
+    max-width: 680px;
+    line-height: 1.5;
+}
+
+.hidkal-horizon {
+    white-space: nowrap;
+    border: 1px solid #bfdbfe;
+    color: #1d4ed8;
+    background: #eff6ff;
+    border-radius: 999px;
+    padding: 9px 13px;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.hidkal-form {
+    display: grid;
+    gap: 16px;
+}
+
+.hidkal-panel {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, .035);
+}
+
+.hidkal-section-title {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.hidkal-section-title h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.hidkal-section-title p {
+    margin: 6px 0 0;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.hidkal-step {
+    color: #94a3b8;
+    font-weight: 800;
+    font-size: 13px;
+}
+
+.hidkal-grid {
+    display: grid;
+    gap: 18px;
+}
+
+.hidkal-grid.two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.hidkal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.hidkal-field>span {
+    color: #334155;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.hidkal-field-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.hidkal-field-top small {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.hidkal-field input,
+.hidkal-field select,
+.hidkal-field textarea {
+    box-sizing: border-box;
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    background: #fff;
+    color: #0f172a;
+    padding: 11px 12px;
+    font: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+.hidkal-field input:focus,
+.hidkal-field select:focus,
+.hidkal-field textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+}
+
+.hidkal-help {
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1.45;
+    font-weight: 400;
+}
+
+.hidkal-fixed-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 18px;
+    padding-top: 14px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.hidkal-fixed-row strong {
+    color: #0f172a;
+}
+
+.hidkal-notes {
+    margin-top: 18px;
+}
+
+.hidkal-submit-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.hidkal-disclaimer {
+    max-width: 700px;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.hidkal-submit-row button {
+    border: 0;
+    border-radius: 10px;
+    background: #1d4ed8;
+    color: #fff;
+    padding: 13px 22px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.hidkal-submit-row button:disabled {
+    opacity: .6;
+    cursor: wait;
+}
+
+.hidkal-message {
+    border-radius: 10px;
+    padding: 13px 15px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.hidkal-message.success {
+    color: #166534;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+}
+
+.hidkal-message.error {
+    color: #991b1b;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+}
+
+@media (max-width: 700px) {
+    .hidkal-heading {
+        flex-direction: column;
+    }
+
+    .hidkal-grid.two {
+        grid-template-columns: 1fr;
+    }
+
+    .hidkal-panel {
+        padding: 17px;
+    }
+
+    .hidkal-fixed-row,
+    .hidkal-submit-row {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .hidkal-submit-row button {
+        width: 100%;
+    }
+}
+
+/* SAVED SCENARIO HISTORY */
+
+.hidkal-history {
+    margin-top: 24px;
+}
+
+.hidkal-history-list {
+    display: grid;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.hidkal-history-card {
+    border: 1px solid #dce5ef;
+    border-radius: 12px;
+    padding: 20px;
+    background: #ffffff;
+}
+
+.hidkal-history-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.hidkal-history-heading h3 {
+    margin: 0 0 5px;
+}
+
+.hidkal-history-heading small,
+.hidkal-history-date {
+    color: #64748b;
+}
+
+.hidkal-history-status {
+    color: #166534;
+    background: #dcfce7;
+    border-radius: 20px;
+    padding: 7px 12px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.hidkal-history-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.hidkal-history-grid div {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.hidkal-history-grid small {
+    display: block;
+    color: #64748b;
+    margin-bottom: 6px;
+}
+
+.hidkal-history-grid strong {
+    color: #172554;
+}
+
+.hidkal-history-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #e2e8f0;
+    font-size: 12px;
+}
+
+.hidkal-history-date {
+    display: block;
+    margin-top: 12px;
+    font-size: 12px;
+}
+
+@media (max-width: 650px) {
+    .hidkal-history-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hidkal-history-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

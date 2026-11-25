@@ -1,0 +1,230 @@
+.evacuation-planner {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.evacuation-unverified {
+    align-self: flex-start;
+    background: #fff3dc;
+    color: #925400;
+    border-radius: 20px;
+    padding: 8px 12px;
+    font-size: 10px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.evacuation-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.evacuation-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.evacuation-form input,
+.evacuation-form select {
+    width: 100%;
+    min-height: 42px;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+    color: #172b45;
+    font: inherit;
+    font-weight: 400;
+}
+
+.evacuation-coordinate-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.evacuation-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.evacuation-actions button {
+    border: 0;
+    border-radius: 8px;
+    padding: 11px 17px;
+    background: #075985;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.evacuation-actions button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.evacuation-actions .evacuation-clear {
+    background: #e2e8f0;
+    color: #334155;
+}
+
+.evacuation-map {
+    width: 100%;
+    height: 390px;
+    overflow: hidden;
+    border: 1px solid #dbe4ee;
+    border-radius: 10px;
+    z-index: 0;
+}
+
+.evacuation-map .leaflet-container {
+    width: 100%;
+    height: 100%;
+    min-height: 390px;
+}
+
+.evacuation-result {
+    padding: 14px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 10px;
+    color: #1e3a5f;
+}
+
+.evacuation-result-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.evacuation-result-grid div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.evacuation-result-grid span {
+    font-size: 11px;
+    color: #52677f;
+}
+
+.evacuation-result-grid strong {
+    overflow-wrap: anywhere;
+    font-size: 17px;
+}
+
+.evacuation-result p,
+.evacuation-safety-note p {
+    margin: 10px 0 0;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.evacuation-message,
+.evacuation-error {
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.evacuation-message {
+    background: #eff6ff;
+    color: #1e40af;
+}
+
+.evacuation-error {
+    background: #fef2f2;
+    color: #991b1b;
+}
+
+.evacuation-safety-note {
+    padding: 14px;
+    background: #fff7e8;
+    border: 1px solid #f5d7a5;
+    border-radius: 9px;
+    color: #854d0e;
+}
+
+.evacuation-safety-note strong {
+    font-size: 13px;
+}
+
+@media (max-width: 700px) {
+    .evacuation-coordinate-grid,
+    .evacuation-result-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .evacuation-map,
+    .evacuation-map .leaflet-container {
+        height: 320px;
+        min-height: 320px;
+    }
+}
+
+
+/* Automatic evacuation destination discovery */
+.evacuation-candidates {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+.evacuation-candidates > p {
+    margin: 0;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.evacuation-candidate {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.evacuation-candidate > div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.evacuation-candidate span {
+    color: #64748b;
+    font-size: 12px;
+}
+
+.evacuation-candidate button {
+    flex-shrink: 0;
+    border: 0;
+    border-radius: 7px;
+    padding: 9px 12px;
+    background: #075985;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    .evacuation-candidate {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

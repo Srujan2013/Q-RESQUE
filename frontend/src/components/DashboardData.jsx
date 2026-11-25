@@ -245,7 +245,7 @@ function DashboardData() {
                 percentage: dashboard.flood_risk.score,
                 status: dashboard.flood_risk.risk,
                 icon: "⚠️",
-                description: "Current flood risk level",
+                description: "Flood risk estimated from the latest historical dataset record",
             },
 
             {
@@ -257,7 +257,7 @@ function DashboardData() {
                 percentage: dashboard.flood_risk.score,
                 status: dashboard.flood_risk.risk,
                 icon: "📊",
-                description: "Current flood risk score",
+                description: "Risk score based on the historical dataset, not live weather",
             },
 
             {
@@ -279,12 +279,12 @@ function DashboardData() {
                 id: "system",
                 metric: "System Status",
                 category: "Monitoring",
-                value: dashboard.status,
+                value: liveWeather ? "Weather feed connected" : "Historical fallback",
                 rawValue: 1,
                 percentage: 100,
-                status: "Active",
+                status: liveWeather ? "Connected" : "Fallback",
                 icon: "🛰️",
-                description: "Q-RESCUE monitoring system",
+                description: "Weather feed availability. This does not indicate verified flood observations.",
             },
         ];
     }, [dashboard, liveWeather]);
@@ -384,32 +384,40 @@ function DashboardData() {
 
                     <div className="live-badge">
                         <span className="status-dot green"></span>
-                        LIVE MONITORING
+                        LIVE WEATHER CONNECTED
                     </div>
 
                     <h2>
-                        Live Monitoring Dashboard
+                        Environmental Data Dashboard
                     </h2>
 
                     <p>
-                        Real-time environmental conditions
-                        and flood monitoring status.
+                        Live weather feed where available, alongside historical flood-risk assessment
+                        Flood-event observations are not currently validated.
                     </p>
 
                 </div>
 
                 <div className="dashboard-date">
-
-                    <span>
+                    <span className="dashboard-date-label">
                         Weather Update
                     </span>
 
-                    <strong>
-                        {liveWeather
-                            ? liveWeather.timestamp
-                            : "Loading..."}
+                    <strong className="dashboard-date-value">
+                        {liveWeather?.timestamp
+                            ? new Date(liveWeather.timestamp).toLocaleString(
+                                "en-IN",
+                                {
+                                    day: "2-digit",
+                                    month: "short",
+                                    year: "numeric",
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    hour12: true,
+                                }
+                            )
+                            : "Waiting for weather data"}
                     </strong>
-
                 </div>
 
             </div>
@@ -422,15 +430,10 @@ function DashboardData() {
             <div className="live-weather-banner">
 
                 <div className="live-weather-source">
+                    <span className="live-pulse">🟢</span>
 
-                    <span className="live-pulse">
-                        🟢
-                    </span>
-
-                    <div>
-                        <strong>
-                            LIVE WEATHER
-                        </strong>
+                    <div className="weather-banner-info">
+                        <strong>LIVE WEATHER</strong>
 
                         <small>
                             {liveWeather
@@ -438,19 +441,16 @@ function DashboardData() {
                                 : "Connecting to weather service..."}
                         </small>
                     </div>
-
                 </div>
 
                 <div className="weather-source-text">
-
                     <span>
-                        Source: Open-Meteo
+                        Source: {liveWeather?.source || "Unavailable"}
                     </span>
 
                     <small>
                         Current weather model data
                     </small>
-
                 </div>
 
             </div>
@@ -619,7 +619,7 @@ function DashboardData() {
                             </h3>
 
                             <p>
-                                Current risk assessment
+                                Historical dataset-based risk assessment
                             </p>
 
                         </div>
@@ -728,7 +728,7 @@ function DashboardData() {
                             </h3>
 
                             <p>
-                                Q-RESCUE operational status
+                                Q-RESCUE backend service status
                             </p>
 
                         </div>
@@ -741,7 +741,7 @@ function DashboardData() {
                         <div className="system-metric">
 
                             <span>
-                                🟢 System Status
+                                🟢 Backend API
                             </span>
 
                             <strong className="active-text">
@@ -754,7 +754,7 @@ function DashboardData() {
                         <div className="system-metric">
 
                             <span>
-                                📍 Flood Zones
+                                📍 Configured Zones
                             </span>
 
                             <strong>
@@ -767,11 +767,11 @@ function DashboardData() {
                         <div className="system-metric">
 
                             <span>
-                                📡 Monitoring
+                                📡 Zone Coverage
                             </span>
 
                             <strong>
-                                {dashboard.zones} zones
+                                {dashboard.zones} configured zones
                             </strong>
 
                         </div>

@@ -3452,3 +3452,709 @@ body {
     }
 
 }
+
+.dam-map-popup {
+    min-width: 220px;
+}
+
+.dam-map-popup h3 {
+    margin: 0 0 12px;
+    color: #17324d;
+    font-size: 17px;
+}
+
+.dam-map-popup p {
+    margin: 7px 0;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.legend-reservoir {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 7px;
+    border-radius: 50%;
+    background: #075985;
+    border: 2px solid white;
+    box-shadow: 0 0 0 1px #075985;
+}
+
+.dam-map-popup {
+    min-width: 220px;
+}
+
+.dam-map-popup h3 {
+    margin: 0 0 12px;
+    color: #17324d;
+    font-size: 17px;
+}
+
+.dam-map-popup p {
+    margin: 7px 0;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.dam-map-popup hr {
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+    margin: 12px 0;
+}
+
+.legend-reservoir {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 7px;
+    border-radius: 50%;
+    background: #075985;
+    border: 2px solid white;
+    box-shadow: 0 0 0 1px #075985;
+}
+
+/* Q-RESCUE weather display formatting */
+
+.dashboard-date {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.dashboard-date-label {
+    font-size: 12px;
+    color: #52647a;
+}
+
+.dashboard-date-value {
+    font-size: 13px;
+    color: #243b53;
+}
+
+.live-weather-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    background: #ffffff;
+    border: 1px solid #dce6f1;
+    border-radius: 12px;
+}
+
+.live-weather-source {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.weather-banner-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.weather-banner-info strong {
+    font-size: 13px;
+    color: #152238;
+}
+
+.weather-banner-info small,
+.weather-source-text small {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.weather-source-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: right;
+}
+
+.weather-source-text span {
+    font-size: 12px;
+    font-weight: 600;
+    color: #334155;
+}
+
+@media (max-width: 600px) {
+    .live-weather-banner {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .weather-source-text {
+        text-align: left;
+    }
+
+    .dashboard-date {
+        align-items: flex-start;
+    }
+}
+
+/* Separate page navigation */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-links button {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 10px 14px;
+    font: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 7px;
+    transition: background 0.2s ease;
+}
+
+.nav-links button:hover,
+.nav-links button.active {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+@media (max-width: 600px) {
+    .navbar {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .nav-links button {
+        padding: 8px;
+        font-size: 12px;
+    }
+}
+
+/* =====================================
+   Q-RESCUE TALUK DETAILS VISUAL DESIGN
+===================================== */
+
+.taluk-page {
+    max-width: 1500px;
+    margin: auto;
+    padding: 30px;
+    color: #172b46;
+    animation: talukFade 0.5s ease;
+}
+
+@keyframes talukFade {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hero section */
+
+.taluk-header {
+    position: relative;
+    overflow: hidden;
+    padding: 42px;
+    border-radius: 22px;
+    color: white;
+    background: linear-gradient(120deg, #063b72, #087fba, #20b6c9);
+    box-shadow: 0 12px 30px rgba(5, 74, 126, 0.2);
+    margin-bottom: 28px;
+}
+
+.taluk-header::after {
+    content: "🌊";
+    position: absolute;
+    right: 65px;
+    top: 5px;
+    font-size: 125px;
+    opacity: 0.22;
+    transform: rotate(-15deg);
+}
+
+.taluk-header h1 {
+    position: relative;
+    z-index: 1;
+    font-size: clamp(25px, 3vw, 38px);
+    margin: 0 0 12px;
+    color: white;
+}
+
+.taluk-header p {
+    position: relative;
+    z-index: 1;
+    color: #e0f5ff;
+    font-size: 16px;
+}
+
+.taluk-header small {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    margin-top: 12px;
+    padding: 7px 13px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.17);
+    color: white;
+}
+
+/* Summary cards */
+
+.taluk-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin: 28px 0;
+}
+
+.taluk-stat {
+    position: relative;
+    overflow: hidden;
+    padding: 25px;
+    border-radius: 17px;
+    background: white;
+    border: 1px solid #dceaf5;
+    box-shadow: 0 7px 22px rgba(25, 70, 110, 0.07);
+    transition: 0.25s;
+}
+
+.taluk-stat:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(25, 100, 160, 0.13);
+}
+
+.taluk-stat::after {
+    position: absolute;
+    right: 18px;
+    top: 12px;
+    font-size: 38px;
+    opacity: 0.2;
+}
+
+.taluk-stat:nth-child(1)::after {
+    content: "🏛️";
+}
+
+.taluk-stat:nth-child(2)::after {
+    content: "🏘️";
+}
+
+.taluk-stat:nth-child(3)::after {
+    content: "👥";
+}
+
+.taluk-stat h2 {
+    font-size: clamp(24px, 3vw, 32px);
+    color: #087fba;
+    margin: 0 0 10px;
+}
+
+.taluk-stat p {
+    color: #62748b;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Search */
+
+.taluk-search {
+    margin: 28px 0 20px;
+}
+
+.taluk-search input {
+    width: 100%;
+    max-width: 450px;
+    padding: 14px 18px;
+    border: 1px solid #cbdceb;
+    border-radius: 12px;
+    background: white;
+    color: #172b46;
+    font-size: 15px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.taluk-search input:focus {
+    border-color: #078acb;
+    box-shadow: 0 0 0 4px rgba(7, 138, 203, 0.12);
+}
+
+/* Taluk cards */
+
+.taluk-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+    gap: 19px;
+}
+
+.taluk-card {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    width: 100%;
+    padding: 23px;
+    text-align: left;
+    color: #172b46;
+    background: white;
+    border: 1px solid #dce8f2;
+    border-radius: 17px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(30, 75, 115, 0.06);
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+}
+
+.taluk-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(#078acb, #20c5b5);
+}
+
+.taluk-card:hover {
+    transform: translateY(-6px);
+    border-color: #36a9dc;
+    box-shadow: 0 14px 28px rgba(15, 110, 170, 0.15);
+}
+
+.taluk-card.selected {
+    border: 2px solid #078acb;
+    background: linear-gradient(145deg, #ffffff, #eaf8ff);
+    box-shadow: 0 10px 28px rgba(7, 138, 203, 0.16);
+}
+
+.taluk-card h2 {
+    margin: 0 0 19px;
+    color: #075b91;
+    font-size: 21px;
+}
+
+.taluk-card h2::before {
+    content: "📍 ";
+    font-size: 17px;
+}
+
+.taluk-card-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.taluk-card-stats span {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    color: #66788e;
+    font-size: 13px;
+}
+
+.taluk-card-stats strong {
+    color: #172b46;
+    font-size: 16px;
+}
+
+.taluk-card-action {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 8px 13px;
+    border-radius: 8px;
+    background: #e5f5ff;
+    color: #087fba;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* Village details */
+
+.village-details {
+    margin-top: 32px;
+    padding: 27px;
+    background: white;
+    border: 1px solid #dce8f2;
+    border-radius: 19px;
+    box-shadow: 0 10px 28px rgba(30, 75, 115, 0.08);
+    animation: talukFade 0.3s ease;
+}
+
+.village-details h2 {
+    color: #075b91;
+    font-size: 26px;
+}
+
+.village-details h3 {
+    margin: 25px 0 15px;
+}
+
+.village-summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.village-summary div {
+    padding: 20px;
+    border-radius: 13px;
+    background: #eff8ff;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.village-summary strong {
+    color: #087fba;
+    font-size: 25px;
+}
+
+.village-summary span {
+    color: #62748b;
+    font-size: 13px;
+}
+
+/* Village table */
+
+.village-table-wrapper {
+    overflow-x: auto;
+    border: 1px solid #e1eaf2;
+    border-radius: 12px;
+}
+
+.village-table {
+    width: 100%;
+    min-width: 600px;
+    border-collapse: collapse;
+}
+
+.village-table th {
+    padding: 16px;
+    background: #075b91;
+    color: white;
+    text-align: left;
+    font-size: 13px;
+}
+
+.village-table td {
+    padding: 13px 16px;
+    border-bottom: 1px solid #e9eff5;
+    color: #344b63;
+    font-size: 14px;
+}
+
+.village-table tbody tr:nth-child(even) {
+    background: #f2f8fc;
+}
+
+.village-table tbody tr:hover {
+    background: #e2f4ff;
+}
+
+.taluk-disclaimer {
+    margin-top: 27px;
+    padding: 16px;
+    border-radius: 10px;
+    background: #fff8e8;
+    border: 1px solid #f4dfad;
+    color: #76551b;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* Responsive */
+
+@media (max-width: 750px) {
+    .taluk-page {
+        padding: 15px;
+    }
+
+    .taluk-header {
+        padding: 27px 22px;
+    }
+
+    .taluk-header::after {
+        right: 10px;
+        font-size: 75px;
+    }
+
+    .taluk-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .village-summary {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Q-RESCUE Leaflet map visibility fix */
+
+.real-map-container {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    min-height: 600px;
+    overflow: hidden;
+    background: #e5e7eb;
+    border-radius: 12px;
+}
+
+.real-map-container .leaflet-container,
+.qrescue-map {
+    width: 100% !important;
+    height: 600px !important;
+    min-height: 600px !important;
+    background: #e5e7eb;
+    z-index: 1;
+}
+
+.leaflet-control-container {
+    z-index: 1000;
+}
+
+.real-map-container {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    min-height: 600px;
+    overflow: hidden;
+    background: #e5e7eb;
+    border-radius: 12px;
+}
+
+.real-map-container .leaflet-container,
+.qrescue-map {
+    width: 100% !important;
+    height: 600px !important;
+    min-height: 600px !important;
+    z-index: 1;
+}
+
+.leaflet-container {
+    font-family: inherit;
+}
+
+.leaflet-control-container {
+    z-index: 1000;
+}
+
+/* OFFICER DIRECTORY */
+.officer-directory {
+    margin-top: 35px;
+    padding: 24px;
+    background: var(--card-bg, #ffffff);
+    border: 1px solid #dce3eb;
+    border-radius: 14px;
+}
+
+.officer-directory-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.officer-directory-header button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    background: #1769aa;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.officer-group {
+    margin-top: 25px;
+}
+
+.officer-group h4 {
+    margin-bottom: 15px;
+}
+
+.officer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 15px;
+}
+
+.officer-card {
+    padding: 18px;
+    border: 1px solid #dce3eb;
+    border-radius: 10px;
+    background: var(--background, #f8fafc);
+}
+
+.officer-card h5 {
+    margin: 0 0 8px;
+    font-size: 16px;
+}
+
+.officer-card strong {
+    display: block;
+    margin-top: 12px;
+}
+
+.officer-status {
+    display: inline-block;
+    padding: 4px 9px;
+    border-radius: 20px;
+    background: #fff1d6;
+    color: #895900;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.officer-details {
+    margin-top: 12px;
+}
+
+.officer-details p {
+    margin: 7px 0;
+    overflow-wrap: anywhere;
+}
+
+.officer-details a {
+    display: inline-block;
+    margin: 7px 12px 0 0;
+    color: #1769aa;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.officer-fields {
+    display: grid;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.officer-fields input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+}
+
+.officer-disclaimer {
+    margin-top: 25px;
+    padding: 12px;
+    background: #fff8e8;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+}

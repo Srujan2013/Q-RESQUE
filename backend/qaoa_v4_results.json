@@ -1,0 +1,207 @@
+{
+  "experiment": "QAOA v4 controlled evaluation",
+  "zones": [
+    "Gokak",
+    "Chikkodi",
+    "Nippani",
+    "Athani"
+  ],
+  "priority_scores": [
+    0.9578947368421052,
+    0.8755811675590962,
+    0.8251691262896697,
+    0.6076923076923078
+  ],
+  "resource_budget": 2,
+  "exact_classical_zones": [
+    "Gokak",
+    "Chikkodi"
+  ],
+  "exact_classical_score": 1.8334759044012015,
+  "depths_tested": [
+    1,
+    2,
+    3
+  ],
+  "penalties_tested": [
+    5.0,
+    10.0,
+    20.0
+  ],
+  "restarts_per_configuration": 3,
+  "max_iterations_per_restart": 400,
+  "results": [
+    {
+      "depth": 1,
+      "penalty": 5.0,
+      "restarts": 3,
+      "maxiter_per_restart": 400,
+      "exact_optimum_probability": 0.12354765777116462,
+      "budget_feasible_probability": 0.7335634418737527,
+      "most_probable_feasible_zones": [
+        "Gokak",
+        "Chikkodi"
+      ],
+      "most_probable_feasible_score": 1.8334759044012015,
+      "matches_exact_optimum": true,
+      "best_expected_penalized_cost": -0.14555385253162495,
+      "optimizer_success": true,
+      "optimizer_message": "Return from COBYLA because the trust region radius reaches its lower bound.",
+      "best_run_evaluations": 66,
+      "optimization_seconds": 1.0220924929999455
+    },
+    {
+      "depth": 1,
+      "penalty": 10.0,
+      "restarts": 3,
+      "maxiter_per_restart": 400,
+      "exact_optimum_probability": 0.15020324665205254,
+      "budget_feasible_probability": 0.6655339993632168,
+      "most_probable_feasible_zones": [
+        "Gokak",
+        "Chikkodi"
+      ],
+      "most_probable_feasible_score": 1.8334759044012015,
+      "matches_exact_optimum": true,
+      "best_expected_penalized_cost": 2.4265757850856593,
+      "optimizer_success": true,
+      "optimizer_message": "Return from COBYLA because the trust region radius reaches its lower bound.",
+      "best_run_evaluations": 124,
+      "optimization_seconds": 1.9297289280002587
+    },
+    {
+      "depth": 1,
+      "penalty": 20.0,
+      "restarts": 3,
+      "maxiter_per_restart": 400,
+      "exact_optimum_probability": 0.1365720770756043,
+      "budget_feasible_probability": 0.624773578231546,
+      "most_probable_feasible_zones": [
+        "Gokak",
+        "Chikkodi"
+      ],
+      "most_probable_feasible_score": 1.8334759044012015,
+      "matches_exact_optimum": true,
+      "best_expected_penalized_cost": 7.4325189980653175,
+      "optimizer_success": true,
+      "optimizer_message": "Return from COBYLA because the trust region radius reaches its lower bound.",
+      "best_run_evaluations": 372,
+      "optimization_seconds": 3.378394005998416
+    },
+    {
+      "depth": 2,
+      "penalty": 5.0,
+      "restarts": 3,
+      "maxiter_per_restart": 400,
+      "exact_optimum_probability": 0.14283858925718718,
+      "budget_feasible_probability": 0.8362636338205266,
+      "most_probable_feasible_zones": [
+        "Nippani",
+        "Athani"
+      ],
+      "most_probable_feasible_score": 1.4328614339819774,
+      "matches_exact_optimum": false,
+      "best_expected_penalized_cost": -0.7544465035098962,
+      "optimizer_success": true,
+      "optimizer_message": "Return from COBYLA because the trust region radius reaches its lower bound.",
+      "best_run_evaluations": 248,
+      "optimization_seconds": 5.748067336000531
+    },
+    {
+      "depth": 2,
+      "penalty": 10.0,
+      "restarts": 3,
+      "maxiter_per_restart": 400,
+      "exact_optimum_probability": 0.16560982939784355,
+      "budget_feasible_probability": 0.7310330741428416,
+      "most_probable_feasible_zones": [
+        "Gokak",
+        "Chikkodi"
+      ],
+      "most_probable_feasible_score": 1.8334759044012015,
+      "matches_exact_optimum": true,
+      "best_expected_penalized_cost": 1.3960374287404882,
+      "optimizer_success": true,
+      "optimizer_message": "Return from COBYLA because the trust region radius reaches its lower bound.",
+      "best_run_evaluations": 322,
+      "optimization_seconds": 7.0138633210008265
+    },
+    {
+      "depth": 2,
+      "penalty": 20.0,
+      "restarts": 3,
+      "maxiter_per_restart": 400,
+      "exact_optimum_probability": 0.11614112134283681,
+      "budget_feasible_probability": 0.7324672979183334,
+      "most_probable_feasible_zones": [
+        "Nippani",
+        "Athani"
+      ],
+      "most_probable_feasible_score": 1.4328614339819774,
+      "matches_exact_optimum": false,
+      "best_expected_penalized_cost": 4.822568395231286,
+      "optimizer_success": false,
+      "optimizer_message": "Return from COBYLA because the objective function has been evaluated MAXFUN times.",
+      "best_run_evaluations": 400,
+      "optimization_seconds": 9.402987112000119
+    },
+    {
+      "depth": 3,
+      "penalty": 5.0,
+      "restarts": 3,
+      "maxiter_per_restart": 400,
+      "exact_optimum_probability": 0.16598074782482886,
+      "budget_feasible_probability": 0.9714012450875744,
+      "most_probable_feasible_zones": [
+        "Gokak",
+        "Chikkodi"
+      ],
+      "most_probable_feasible_score": 1.8334759044012015,
+      "matches_exact_optimum": true,
+      "best_expected_penalized_cost": -1.471382584958409,
+      "optimizer_success": false,
+      "optimizer_message": "Return from COBYLA because the objective function has been evaluated MAXFUN times.",
+      "best_run_evaluations": 400,
+      "optimization_seconds": 12.212409506999393
+    },
+    {
+      "depth": 3,
+      "penalty": 10.0,
+      "restarts": 3,
+      "maxiter_per_restart": 400,
+      "exact_optimum_probability": 0.1731224747708194,
+      "budget_feasible_probability": 0.9182378662866966,
+      "most_probable_feasible_zones": [
+        "Gokak",
+        "Chikkodi"
+      ],
+      "most_probable_feasible_score": 1.8334759044012015,
+      "matches_exact_optimum": true,
+      "best_expected_penalized_cost": -0.5271232987470675,
+      "optimizer_success": false,
+      "optimizer_message": "Return from COBYLA because the objective function has been evaluated MAXFUN times.",
+      "best_run_evaluations": 400,
+      "optimization_seconds": 11.377099412999087
+    },
+    {
+      "depth": 3,
+      "penalty": 20.0,
+      "restarts": 3,
+      "maxiter_per_restart": 400,
+      "exact_optimum_probability": 0.13757121486174473,
+      "budget_feasible_probability": 0.6819015622296268,
+      "most_probable_feasible_zones": [
+        "Gokak",
+        "Athani"
+      ],
+      "most_probable_feasible_score": 1.5655870445344129,
+      "matches_exact_optimum": false,
+      "best_expected_penalized_cost": 5.949517458798383,
+      "optimizer_success": false,
+      "optimizer_message": "Return from COBYLA because the objective function has been evaluated MAXFUN times.",
+      "best_run_evaluations": 400,
+      "optimization_seconds": 13.38900963299966
+    }
+  ],
+  "warning": "Small simulator experiment with illustrative priority scores. Not validated for operational emergency resource allocation."
+}

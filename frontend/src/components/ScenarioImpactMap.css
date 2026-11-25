@@ -1,0 +1,239 @@
+.scenario-map-panel {
+    background: #fff;
+    border: 1px solid #dce6f0;
+    border-radius: 18px;
+    padding: 24px;
+    margin: 24px 0;
+    color: #18324b;
+    box-shadow: 0 8px 25px rgba(23, 50, 77, .06);
+}
+
+.scenario-map-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.scenario-map-kicker {
+    color: #087ba5;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+}
+
+.scenario-map-heading h2 {
+    margin: 7px 0;
+    font-size: 25px;
+}
+
+.scenario-map-heading p {
+    color: #64778a;
+    font-size: 13px;
+    margin: 0;
+}
+
+.scenario-map-status {
+    background: #e8f4fb;
+    color: #087ba5;
+    border-radius: 20px;
+    padding: 8px 12px;
+    font-size: 10px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.scenario-map-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.scenario-map-stats > div {
+    background: #f3f7fb;
+    border-radius: 11px;
+    padding: 15px;
+}
+
+.scenario-map-stats strong {
+    display: block;
+    font-size: 23px;
+    color: #126b8e;
+    overflow-wrap: anywhere;
+}
+
+.scenario-map-stats span {
+    display: block;
+    margin-top: 5px;
+    font-size: 11px;
+    color: #64778a;
+}
+
+.scenario-map-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 13px;
+    margin: 15px 0;
+    font-size: 11px;
+    color: #52677c;
+}
+
+.scenario-map-legend span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.scenario-map-legend i {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.scenario-map-legend .river-legend {
+    background: #168ac0;
+    width: 17px;
+    height: 3px;
+    border-radius: 2px;
+}
+
+.scenario-map-container {
+    height: 540px;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 13px;
+    border: 1px solid #d8e2ec;
+}
+
+.scenario-leaflet-map {
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
+.scenario-selected-village {
+    position: relative;
+    margin-top: 14px;
+    padding: 16px;
+    border: 1px solid #cfe0ed;
+    background: #f5f9fc;
+    border-radius: 11px;
+}
+
+.scenario-selected-village h3 {
+    margin: 0 0 9px;
+}
+
+.scenario-selected-village p {
+    font-size: 13px;
+    margin: 5px 0;
+}
+
+.scenario-selected-village button {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    border: 0;
+    background: transparent;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.scenario-map-notice,
+.scenario-safe-status {
+    margin-top: 15px;
+    border-radius: 10px;
+    padding: 13px 15px;
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+.scenario-map-notice {
+    background: #fff8e8;
+    color: #79551b;
+}
+
+.scenario-safe-status {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: #f0f5fa;
+    color: #52677c;
+}
+
+.scenario-map-notice p {
+    margin: 5px 0 0;
+}
+
+.scenario-map-error {
+    color: #b42318;
+    font-size: 12px;
+}
+
+@media (max-width: 700px) {
+    .scenario-map-panel {
+        padding: 15px;
+    }
+
+    .scenario-map-heading {
+        display: block;
+    }
+
+    .scenario-map-status {
+        display: inline-block;
+        margin-top: 10px;
+    }
+
+    .scenario-map-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .scenario-map-container {
+        height: 420px;
+    }
+}
+
+.belagavi-taluk-label {
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid #94a3b8;
+    border-radius: 5px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+    color: #18324b;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 5px;
+}
+
+.belagavi-taluk-label::before {
+    display: none;
+}
+
+.scenario-map-container {
+    background: #eaf2f8;
+}
+
+.belagavi-taluk-label {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #94a3b8;
+    border-radius: 4px;
+    color: #18324b;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 5px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+.belagavi-taluk-label::before {
+    display: none;
+}
+
+/* Ensure Leaflet fills the map panel and can recalculate its dimensions. */
+.scenario-map-container .leaflet-container {
+    width: 100%;
+    height: 100%;
+    min-height: 420px;
+    background: #eaf2f8;
+}

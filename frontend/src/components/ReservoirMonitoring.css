@@ -1,0 +1,242 @@
+.reservoir-section {
+    margin: 35px 0;
+    padding: 30px;
+    background: #ffffff;
+    border: 1px solid #e5eaf0;
+    border-radius: 18px;
+    box-shadow: 0 5px 20px rgba(20, 45, 75, 0.06);
+}
+
+.reservoir-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.reservoir-eyebrow {
+    color: #087e8b;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.reservoir-header h2 {
+    margin: 9px 0;
+    color: #17324d;
+    font-size: 27px;
+}
+
+.reservoir-header p {
+    margin: 0;
+    color: #718096;
+}
+
+.reservoir-refresh,
+.reservoir-details-button {
+    padding: 10px 17px;
+    border: none;
+    border-radius: 8px;
+    background: #087e8b;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.reservoir-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 22px;
+}
+
+.reservoir-summary-card {
+    padding: 18px;
+    border-radius: 12px;
+    background: #f0f7fa;
+}
+
+.reservoir-summary-card span,
+.reservoir-card-stats span {
+    display: block;
+    color: #718096;
+    font-size: 13px;
+}
+
+.reservoir-summary-card strong {
+    display: block;
+    margin-top: 8px;
+    color: #17324d;
+    font-size: 27px;
+}
+
+.reservoir-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.reservoir-controls input,
+.reservoir-controls select {
+    min-width: 0;
+    padding: 12px 14px;
+    border: 1px solid #d8e0e8;
+    border-radius: 8px;
+    background: white;
+    font-size: 14px;
+}
+
+.reservoir-controls input {
+    flex: 1;
+}
+
+.reservoir-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+}
+
+.reservoir-card {
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 13px;
+    background: #ffffff;
+    transition: 0.2s ease;
+}
+
+.reservoir-card:hover,
+.reservoir-card.selected {
+    border-color: #087e8b;
+    box-shadow: 0 5px 18px rgba(8, 126, 139, 0.1);
+}
+
+.reservoir-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reservoir-icon {
+    font-size: 25px;
+}
+
+.reservoir-scope {
+    padding: 5px 9px;
+    border-radius: 20px;
+    background: #e7f5f1;
+    color: #18785e;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.reservoir-card h3 {
+    margin: 15px 0 5px;
+    color: #17324d;
+    font-size: 19px;
+}
+
+.reservoir-river {
+    margin: 0 0 18px;
+    color: #087e8b;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.reservoir-card-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 10px;
+    margin-bottom: 20px;
+}
+
+.reservoir-card-stats strong {
+    display: block;
+    margin-top: 5px;
+    color: #263b50;
+    font-size: 15px;
+}
+
+.reservoir-details-button {
+    width: 100%;
+}
+
+.reservoir-details {
+    margin-top: 17px;
+    padding-top: 15px;
+    border-top: 1px solid #e5eaf0;
+    overflow-wrap: anywhere;
+}
+
+.reservoir-details p {
+    margin: 9px 0;
+    color: #536579;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.reservoir-details a {
+    display: inline-block;
+    margin-top: 8px;
+    color: #087e8b;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.reservoir-message {
+    padding: 25px;
+    border-radius: 10px;
+    background: #f5f8fb;
+    color: #536579;
+    text-align: center;
+}
+
+.reservoir-error {
+    color: #b42318;
+}
+
+.reservoir-error button {
+    padding: 9px 16px;
+    border: none;
+    border-radius: 7px;
+    background: #087e8b;
+    color: white;
+    cursor: pointer;
+}
+
+.reservoir-disclaimer {
+    margin-top: 22px;
+    color: #718096;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+@media (max-width: 650px) {
+    .reservoir-section {
+        padding: 18px;
+    }
+
+    .reservoir-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .reservoir-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .reservoir-controls {
+        flex-direction: column;
+    }
+}
+.reservoir-status-unavailable {
+    color: #a15c00;
+    font-weight: 700;
+}
+
+.reservoir-disclaimer {
+    padding: 14px 16px;
+    border-left: 4px solid #d49a36;
+    border-radius: 6px;
+    background: #fff8e9;
+}

@@ -92,19 +92,6 @@ app.add_middleware(CORSMiddleware, allow_origins=list(set(origins)),
                    allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 init_db()
 
-# Temporary production database verification
-if os.getenv("DATABASE_URL"):
-    db_info = one(
-        "SELECT current_database() AS database, current_user AS role"
-    )
-    logger.info("DATABASE CHECK: PostgreSQL connected: %s", db_info)
-else:
-    logger.warning("DATABASE CHECK: Using local SQLite database")
-
-for table in ("dams", "hidkal_scenarios", "saved_scenarios"):
-    result = one(f"SELECT COUNT(*) AS total FROM {table}")
-    logger.info("DATABASE CHECK: %s = %s records", table, result["total"])
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "Data"
 

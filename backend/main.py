@@ -370,14 +370,96 @@ def add_alert(dam_id:int, req:AlertRequest):
 
 @app.get("/api/dam-monitoring/summary")
 def dam_summary():
-    dams=rows("SELECT * FROM dams WHERE district=? ORDER BY dam_name",("Belagavi",))
-    summary=[]
-    for dam in dams:
-        obs=rows("SELECT * FROM dam_observations WHERE dam_id=? ORDER BY fetched_at DESC LIMIT 1",(dam["id"],))
-        ins=rows("SELECT * FROM dam_inspections WHERE dam_id=? ORDER BY inspection_date DESC LIMIT 1",(dam["id"],))
-        alert=rows("SELECT COUNT(*) AS n FROM dam_alerts WHERE dam_id=? AND active=1",(dam["id"],))
-        summary.append({**dam,"latest_observation":obs[0] if obs else None,
-            "latest_inspection":ins[0] if ins else None,"active_alert_count":alert[0]["n"],
-            "measurement_status":obs[0]["data_status"] if obs else "UNAVAILABLE"})
-    return {"count":len(summary),"dams":summary,
-        "warning":"Stored records only. No live dam telemetry is connected and no structural safety certification is inferred."}
+    if os.getenv("DATABASE_URL"):
+        sql = """
+            SELECT
+                d.*,
+                (
+                    SELECT row_to_json(o)
+                    FROM dam_observations o
+                    WHERE o.dam_id = d.id
+                    ORDER BY o.fetched_at DESC
+                    LIMIT 1
+                ) AS latest_observation,
+                (
+                    SELECT row_to_json(i)
+                    FROM dam_inspections i
+                    WHERE i.dam_id = d.id
+                    ORDER BY i.inspection_date DESC
+                    LIMIT 1
+                ) AS latest_inspection,
+                (
+                    SELECT COUNT(*)
+                    FROM dam_alerts a
+                    WHERE a.dam_id = d.id AND a.active = 1
+                ) AS active_alert_count
+            FROM dams d
+            WHERE d.district = ?
+            ORDER BY d.dam_name
+        """
+    else:
+        sql = """
+            SELECT
+                d.*,
+                (
+                    SELECT json_object(
+                        'id', o.id,
+                        'data_status', o.data_status,
+                        'water_level_m', o.water_level_m,
+                        'storage_tmc', o.storage_tmc,
+                        'capacity_percent', o.capacity_percent,
+                        'inflow_cusecs', o.inflow_cusecs,
+                        'outflow_cusecs', o.outflow_cusecs,
+                        'gate_status', o.gate_status,
+                        'observed_at', o.observed_at,
+                        'fetched_at', o.fetched_at
+                    )
+                    FROM dam_observations o
+                    WHERE o.dam_id = d.id
+                    ORDER BY o.fetched_at DESC
+                    LIMIT 1
+                ) AS latest_observation,
+                (
+                    SELECT json_object(
+                        'id', i.id,
+                        'inspection_date', i.inspection_date,
+                        'inspection_status', i.inspection_status,
+                        'findings', i.findings
+                    )
+                    FROM dam_inspections i
+                    WHERE i.dam_id = d.id
+                    ORDER BY i.inspection_date DESC
+                    LIMIT 1
+                ) AS latest_inspection,
+                (
+                    SELECT COUNT(*)
+                    FROM dam_alerts a
+                    WHERE a.dam_id = d.id AND a.active = 1
+                ) AS active_alert_count
+            FROM dams d
+            WHERE d.district = ?
+            ORDER BY d.dam_name
+        """
+
+    summary = rows(sql, ("Belagavi",))
+
+    for dam in summary:
+        for field in ("latest_observation", "latest_inspection"):
+            value = dam.get(field)
+            if isinstance(value, str):
+                dam[field] = json.loads(value) if value else None
+
+        dam["measurement_status"] = (
+            dam["latest_observation"]["data_status"]
+            if dam["latest_observation"]
+            else "UNAVAILABLE"
+        )
+
+    return {
+        "count": len(summary),
+        "dams": summary,
+        "warning": (
+            "Stored records only. No live dam telemetry is connected "
+            "and no structural safety certification is inferred."
+        ),
+    }
